@@ -37,16 +37,26 @@ jobs:
       - name: Check out fork
         uses: actions/checkout@v7
 
-      - name: Set up Java 11
+      # Current Android command-line tools (downloaded by setup-android) require JDK 17+.
+      - name: Set up Java 17 for Android SDK tools
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: '11'
+          java-version: '17'
 
       - name: Set up Android SDK and pinned NDK
         uses: android-actions/setup-android@v4
         with:
           packages: 'platform-tools platforms;android-29 build-tools;29.0.3 ndk;23.1.7779620'
+
+      # This repository pins Gradle 7.0.2 / AGP 4.1.1.
+      # Gradle 7.0.2 supports running on JDK 11, but Java 17 runtime support
+      # was added in Gradle 7.3. Restore JDK 11 before invoking Gradle.
+      - name: Set up Java 11 for legacy Gradle build
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '11'
 
       - name: Install native build dependencies
         run: |
