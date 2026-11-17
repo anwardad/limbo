@@ -61,8 +61,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             autoconf automake autopoint bison build-essential curl flex gettext \
-            libtool libtool-bin make patch perl pkg-config python3 rsync texinfo \
+            gtk-doc-tools libtool libtool-bin make patch perl pkg-config python3 rsync texinfo \
             python-is-python3 unzip wget xz-utils zip
+          command -v gtkdocize
+          gtkdocize --version
 
       - name: Set up Gradle 7.0.2
         uses: gradle/actions/setup-gradle@v6
